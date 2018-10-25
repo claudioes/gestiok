@@ -1,0 +1,36 @@
+{% if attachments is empty %}
+    <p class="text-center">
+        {{ __('No files') }}
+    </p>
+{% else %}
+    <ul class="list-group">
+        {% for attachment in attachments %}
+            {% set download_url = path_for('attachment.download', {model_type: model_type, model_id: model_id, attachment: attachment.id}) %}
+            
+            <li class="list-group-item">
+                <div class="pull-right">
+                    <a href="{{ download_ur }}" class="btn btn-sm btn-default">
+                        <i class="fa fa-download"></i>
+                        {{ __('Download') }}
+                    </a>
+
+                    {% if auth.user.is_admin or auth.user.id == attachment.created_by %}
+                        {% set delete_url = path_for('attachment.delete', {model_type: model_type, model_id: model_id, attachment: attachment.id}) %}
+                        
+                        <a href="#" data-url="{{ delete_url }}" class="btn btn-sm btn-danger attachment-delete" title="{{ __('Delete') }}">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    {% endif %}
+                </div><!-- pull-right -->
+
+                <p>
+                    {{ attachment.nameWithExtension }}
+                    <br>
+                    <small>
+                        {{ __('Created by %s at %s')|format(attachment.createdByUser.full_name, attachment.created_at|date()) }}
+                    </small>
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

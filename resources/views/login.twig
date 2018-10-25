@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{ app_name }}</title>
+        {% include 'layouts/partials/js.twig' %}
+        {% include 'layouts/partials/css.twig' %}
+    </head>
+    <body>
+        <div class="container">
+            <div class="row" style="margin-top:30px;">
+                <div class="col-sm-6 col-md-4 col-sm-offset-3 col-md-offset-4">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div style="text-align: center; margin: 40px 0 55px 0;">
+                                <p style="color: #777">
+                                    {{ app_name }}
+                                </p>
+                            </div>
+
+                            {% include 'layouts/partials/flash.twig' %}
+
+                            <form class="form-login" action="{{ path_for('login') }}" method="post">
+                                {{ csrf_field() }}
+
+                                <div class="form-group">
+                                    <label class="sr-only" for="username">
+                                        {{ __('Username') }}
+                                    </label>
+                                    <input type="text" id="username" name="username" class="form-control" placeholder="Usuario" required autofocus>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="sr-only" for="password">
+                                        {{ __('Password') }}
+                                    </label>
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" required>
+                                </div>
+
+
+                                <div class="form-group text-center">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input name="remember" type="checkbox" value="1">
+                                            {{ __('Remember Me') }}
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button class="btn btn-primary btn-lg btn-block" type="submit">
+                                    {{ __('Login') }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

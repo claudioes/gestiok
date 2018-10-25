@@ -1,0 +1,98 @@
+@import "_bootstrap";
+@import "_paneltabs";
+
+body {
+    margin-bottom: 60px;
+}
+
+.dataTables_wrapper {
+    padding: 15px 0;
+}
+
+table.dataTable thead th {
+    position: relative;
+    background-image: none !important;
+    &.sorting:after, &.sorting_asc:after, &.sorting_desc:after {
+        position: absolute;
+        top: 12px;
+        right: 8px;
+        display: block;
+        font-family: FontAwesome;
+    }
+    &.sorting:after {
+        content: "\f0dc";
+        color: #ddd;
+        font-size: 0.8em;
+        padding-top: 0.12em;
+    }
+    &.sorting_asc:after {
+        content: "\f0de";
+    }
+    &.sorting_desc:after {
+        content: "\f0dd";
+    }
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    .text-muted {
+        color: #fff;
+        margin: 10px 0;
+    }
+}
+
+.row-data {
+    margin-bottom: 10px;
+}
+
+.col-data-label {
+    display: block;
+    font-weight: bold;
+
+    @media (min-width: $screen-sm-min) {
+        text-align: right;
+    }
+}
+
+.img {
+    &-xs {
+        width: 32px;
+        height: 32px
+    }
+    &-md {
+        width: 64px;
+        height: 64px
+    }
+    &-sm {
+        width: 46px;
+        height: 46px;
+    }
+    &-lg {
+        width: 96px;
+        height: 96px
+    }
+}
+
+.bottom {
+    &-sm {
+        margin-bottom: 10px;
+    }
+    &-md {
+        margin-bottom: 15px;
+    }
+    &-lg {
+        margin-bottom: 20px;
+    }
+}
+
+img:not([src]) {
+    visibility: hidden;
+}
+
+.form-group input[type="file"] {
+    padding: 9px 0;
+    display: block;
+}

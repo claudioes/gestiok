@@ -1,0 +1,42 @@
+<div class="media">
+    <div class="media-left">
+        <img class="media-object img-sm" src="{{ base_url()}}/{{ user.avatar_url }}" alt="{{ __('Avatar') }}">
+    </div><!-- media-left -->
+    <div class="media-body">
+        <div class="pull-right">
+            {% if user.is_active %}
+                <span class="label label-success">
+                    {{ __('Active') }}
+                </span>
+            {% else %}
+                <span class="label label-default">
+                    {{ __('Inactive') }}
+                </span>
+            {% endif %}
+        </div><!-- pull-right -->
+
+        <h4 class="media-heading">
+            {{ user.name }}
+        </h4>
+
+        {% if user.email %}
+            <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+        {% endif %}
+    </div><!-- media-body -->
+</div><!-- media -->
+
+{% if auth.user.can('edit', user) %}
+    <hr>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="pull-right">
+                <div class="btn-toolbar" role="toolbar">
+                    <a class="btn btn-primary" href="{{ path_for('user.edit', {'id': user.id}) }}">
+                        <i class="fa fa-pencil"></i>
+                        {{ __('Edit') }}
+                    </a>
+                </div>
+            </div><!-- pull-right -->
+        </div><!-- col -->
+    </div><!-- row -->
+{% endif %}

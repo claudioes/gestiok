@@ -1,0 +1,40 @@
+<?php
+
+use App\Controllers\{MODEL_NAME}Controller;
+use App\Middleware\AuthMiddleware;
+
+$app->group('/{TABLE_NAME}', function () {
+    // Index
+    $this->get('', {MODEL_NAME}Controller::class . ':index')
+        ->setName('{TABLE_NAME}.index');
+
+    // Datatable
+    $this->get('/datatable', {MODEL_NAME}Controller::class . ':datatable')
+        ->setName('{TABLE_NAME}.datatable');
+
+    // Create
+    $this->get('/create', {MODEL_NAME}Controller::class . ':create')
+        ->setName('{TABLE_NAME}.create');
+
+    // Store
+    $this->post('', {MODEL_NAME}Controller::class . ':store')
+        ->setName('{TABLE_NAME}.store');
+
+    $this->group('/{{TABLE_NAME}:[0-9]+}', function () {
+        // View
+        $this->get('', {MODEL_NAME}Controller::class.':view')
+            ->setName('{TABLE_NAME}.view');
+
+        // Edit
+        $this->get('/edit', {MODEL_NAME}Controller::class . ':edit')
+            ->setName('{TABLE_NAME}.edit');
+
+        // Update
+        $this->put('', {MODEL_NAME}Controller::class . ':update')
+            ->setName('{TABLE_NAME}.update');
+
+        // Delete
+        $this->delete('', {MODEL_NAME}Controller::class . ':delete')
+            ->setName('{TABLE_NAME}.delete');
+    });
+})->add(AuthMiddleware::class);

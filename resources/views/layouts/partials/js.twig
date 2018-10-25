@@ -1,0 +1,41 @@
+<!-- Vendor -->
+<script src="{{ base_url() }}/js/vendor.min.js"></script>
+
+<!-- Application -->
+<script>
+    var App = App || {};
+
+    App = {
+        basePath: '{{ base_url() }}',
+        dateFormat: 'dd/mm/yyyy',
+        getUrl: function (url, data) {
+            return this.basePath + '/' + url + (typeof data === "undefined" ? '' : '?' + $.param(data));
+        },
+        csrf: {
+            csrf_name: '{{ csrf_name }}',
+            csrf_value: '{{ csrf_value }}',
+        },
+    };
+
+    $.extend($.fn.dataTable.defaults, {
+        "lengthMenu": [ 10, 50, 100 ],
+        "pageLength": 50,
+        "processing": true,
+        "autoWidth": false,
+        //"stateSave": true,
+        "dom": '<"clearfix"<"col-sm-12"f>><"table-responsive"t><"clearfix"<"col-sm-12"p>>',
+    });
+
+    $.extend($.fn.datepicker.defaults, {
+        format: App.dateFormat,
+        autoclose: true,
+        todayBtn: "linked",
+        todayHighlight: true,
+        language: 'en',
+        assumeNearbyYear: true,
+    });
+
+    Dropzone.autoDiscover = false;
+</script>
+
+<script src="{{ base_url() }}/js/app.min.js"></script>

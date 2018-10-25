@@ -1,0 +1,39 @@
+{% extends 'layouts/app.twig' %}
+
+{% block js %}
+    <script>
+        $(function() {
+            $('.input-group.date').datepicker();
+            
+            var $roles = $('#roles').selectize({
+                plugins: ['remove_button'],
+                closeOnSelect: true,
+            });
+
+            App.initForm();
+        });
+    </script>
+{% endblock %}
+
+{% block title %}
+    {{ __('Editing user') }}
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form id="form" action="{{ path_for('user.update', {id: user.id}) }}" method="post" autocomplete="off" enctype="multipart/form-data">
+                {{ csrf_field() }}
+
+                <input type="hidden" name="_METHOD" value="PUT">
+
+                {% include 'user/partials/form.twig' %}
+
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-check"></i>
+                    {{ __('Save') }}
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

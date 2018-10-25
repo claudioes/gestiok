@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Validators;
+
+use App\Models\{MODEL_NAME};
+use App\Validators\Constraints as MyAssert;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class {MODEL_NAME}Validator extends Validator
+{
+    protected function getRules(): array
+    {
+        ${VARIABLE_NAME} = $this->getArgument('{VARIABLE_NAME}');
+
+        return [
+            'code' => new Assert\Required([
+                new Assert\Length([
+                    'min' => 1,
+                    'max' => 190
+                ]),
+                new MyAssert\Unique([
+                    'query' => {MODEL_NAME}::query(),
+                    'field' => 'code',
+                    'where' => ['id', '<>', ${VARIABLE_NAME}? ${VARIABLE_NAME}->id: null]
+                ]),
+            ]),
+            'description' => new Assert\Required([
+                new Assert\NotBlank
+            ]),
+        ];
+    }
+}

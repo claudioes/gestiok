@@ -1,0 +1,28 @@
+{% if comments is empty %}
+    <p class="text-center">
+        {{ __('No comments') }}
+    </p>
+{% else %}
+    {% for comment in comments %}
+        <div class="media">
+            <div class="media-left">
+                <img
+                    class="media-object img-circle img-sm"
+                    src="{{ base_url() }}/{{ comment.createdByUser.avatar_url }}"
+                    alt="{{ __('Avatar') }}">
+            </div>
+            <div class="media-body">
+                <p>
+                    <strong>
+                        {{ comment.createdByUser.full_name }}
+                    </strong>
+                    <span class="text-muted">
+                        {{ comment.created_at|date() }}
+                    </span>
+                    <br>
+                    {{ comment.message }}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}

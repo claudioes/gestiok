@@ -1,0 +1,13 @@
+<div class="row row-data">
+    <div class="col-sm-12 text-right">
+        {{ __('Created by %s at %s')|format(model.createdByUser.full_name, model.created_at|date()) }}
+    </div>
+</div>
+
+{% if model.updated_by %}
+    <div class="row row-data">
+        <div class="col-sm-12 text-right">
+            {{ __('Updated by %s at %s')|format(model.createdByUser.full_name, model.created_at|date()) }}
+        </div>
+    </div>
+{% endif %}

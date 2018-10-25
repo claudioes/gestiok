@@ -1,0 +1,55 @@
+<div class="form-group">
+    <label for="name" class="control-label">
+        {{ __('Name') }}
+    </label>
+    
+    <input type="text" id="name" name="name" value="{{ user.name }}" class="form-control" required autofocus>
+</div>
+
+<div class="form-group">
+    <label for="email" class="control-label">
+        {{ __('Email') }}
+    </label>
+    
+    <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" placeholder="Opcional">
+</div>
+
+<div class="form-group">
+    <label for="avatar" class="control-label">
+        {{ __('Upload photo') }}
+    </label>
+    
+    <input type="file" id="avatar" name="avatar">
+</div>
+
+<div class="form-group">
+    <label for="roles" class="control-label">
+        {{ __('Roles') }}
+    </label>
+    
+    <select id="roles" name="roles[]" class="form-control" multiple placeholder="Ninguno">
+        {% for k, v in roles %}
+            <option value="{{ k }}" {{ k in user_roles ? 'selected' }}>
+                {{ v }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="form-group">
+    <div class="checkbox">
+        <label>
+            <input name="is_admin" type="checkbox" value="1" {{ user and user.is_admin? 'checked="checked"' }}>
+            {{ __('Is admin?') }}
+        </label>
+    </div> 
+</div>
+
+<div class="form-group">
+    <div class="checkbox">
+        <label>
+            <input name="is_active" type="checkbox" value="1" {{ user and user.is_active? 'checked="checked"' }}>
+            {{ __('Is active?') }}
+        </label>
+    </div> 
+</div>

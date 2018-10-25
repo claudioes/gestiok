@@ -1,0 +1,249 @@
+<?php
+namespace App\Controllers;
+
+use Slim\Http\Request;
+use Slim\Http\Response;
+use App\Models\{MODEL_NAME};
+use App\Validators\{MODEL_NAME}Validator;
+use App\Datatables\Datatable;
+
+class {MODEL_NAME}Controller extends Controller
+{
+    /**
+     * Create or edit
+     *
+     * @param \Slim\Http\Response
+     * @param  App\Models\{MODEL_NAME}   ${VARIABLE_NAME}
+     *
+     * @return \Slim\Http\Response
+     */
+    private function createOrEdit(Response $response, {MODEL_NAME} ${VARIABLE_NAME} = null): Response
+    {
+        if (${VARIABLE_NAME}) {
+            $view = 'edit';
+        } else {
+            $view = 'create';
+        }
+
+        return $this->render(
+            $response,
+            "{TABLE_NAME}/{$view}.twig",
+            [
+                '{TABLE_NAME}' => ${VARIABLE_NAME},
+            ]
+        );
+    }
+
+    /**
+     * Store or update
+     *
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
+     * @param  App\Models\{MODEL_NAME} ${VARIABLE_NAME}
+     *
+     * @return \Slim\Http\Response
+     */
+    private function storeOrUpdate(Request $request, Response $response, {MODEL_NAME} ${VARIABLE_NAME} = null): Response
+    {
+        $input = $request->getParams([
+            'code',
+            'name',
+            'description',
+        ]);
+
+        /**
+         * Translator
+         * @var \Symfony\Component\Translation\Translator $translator
+         */
+        $translator = $this->get('translator');
+        $validation = {MODEL_NAME}Validator::with($input, compact('{VARIABLE_NAME}'))->setTranslator($translator);
+
+        if ($validation->fails()) {
+            return $response->withJson($validation->getErrors(), 400);
+        }
+
+        if (${VARIABLE_NAME}) {
+            ${VARIABLE_NAME}->setUpdatedBy($this->user);
+        } else {
+            ${VARIABLE_NAME} = new {MODEL_NAME};
+            ${VARIABLE_NAME}->setCreatedBy($this->user);
+        }
+
+        ${VARIABLE_NAME}->fill($input)->save();
+
+        return $response->withJson([
+            'redirect' => $this->router->pathFor('{TABLE_NAME}.view', ['{TABLE_NAME}' => ${VARIABLE_NAME}->id])
+        ]);
+    }
+
+    /**
+     * Index
+     *
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
+     *
+     * @return \Slim\Http\Response
+     */
+    public function index(Request $request, Response $response): Response
+    {
+        $this->authorize('{TABLE_NAME}.view');
+
+        return $this->render($response, '{TABLE_NAME}/index.twig');
+    }
+
+    /**
+     * View
+     *
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
+     * @param  array              $args
+     *
+     * @return \Slim\Http\Response
+     */
+    public function view(Request $request, Response $response, array $args): Response
+    {
+        $this->authorize('{TABLE_NAME}.view');
+
+        ${VARIABLE_NAME} = {MODEL_NAME}::findOrFail($args['{TABLE_NAME}']);
+
+        return $this->render(
+            $response,
+            '{TABLE_NAME}/view.twig',
+            [
+                '{TABLE_NAME}' => ${VARIABLE_NAME}
+            ]
+        );
+    }
+
+    /**
+     * Create
+     *
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
+     *
+     * @return \Slim\Http\Response
+     */
+    public function create(Request $request, Response $response): Response
+    {
+        $this->authorize('{TABLE_NAME}.create');
+
+        return $this->createOrEdit($response);
+    }
+
+    /**
+     * Store
+     *
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
+     *
+     * @return \Slim\Http\Response
+     */
+    public function store(Request $request, Response $response): Response
+    {
+        $this->authorize('{TABLE_NAME}.create');
+
+        return $this->storeOrUpdate($request, $response);
+    }
+
+    /**
+     * Edit
+     *
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
+     * @param  array              $args
+     *
+     * @return \Slim\Http\Response
+     */
+    public function edit(Request $request, Response $response, array $args): Response
+    {
+        ${VARIABLE_NAME} = {MODEL_NAME}::findOrFail($args['{TABLE_NAME}']);
+
+        $this->authorize('edit', ${VARIABLE_NAME});
+
+        return $this->createOrEdit($response, ${VARIABLE_NAME});
+    }
+
+    /**
+     * Update
+     *
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
+     * @param  array              $args
+     *
+     * @return \Slim\Http\Response
+     */
+    public function update(Request $request, Response $response, array $args): Response
+    {
+        ${VARIABLE_NAME} = {MODEL_NAME}::findOrFail($args['{TABLE_NAME}']);
+
+        $this->authorize('edit', ${VARIABLE_NAME});
+
+        return $this->storeOrUpdate($request, $response, ${VARIABLE_NAME});
+    }
+
+    /**
+     * Delete
+     *
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
+     * @param  array              $args
+     *
+     * @return \Slim\Http\Response
+     */
+    public function delete(Request $request, Response $response, array $args): Response
+    {
+        ${VARIABLE_NAME} = {MODEL_NAME}::findOrFail($args['{TABLE_NAME}']);
+
+        $this->authorize('delete', ${VARIABLE_NAME});
+
+        try {
+            ${VARIABLE_NAME}->delete();
+
+            $this->user->addActivity('{CAPTION} eliminado', ${VARIABLE_NAME}, $request->getAttribute('ip_address'));
+            $this->flash->addMessage('success', sprintf(MESSAGE_DELETE_OK, '{CAPTION} <strong>'.${VARIABLE_NAME}->code.'</strong>'));
+        } catch (\Throwable $t) {
+            $this->flash->addMessage('error', sprintf(MESSAGE_DELETE_ERROR, '{CAPTION} <strong>'.${VARIABLE_NAME}->code.'</strong>'));
+        }
+
+        return $this->redirect($response, '{TABLE_NAME}.index');
+    }
+
+    /**
+     * Datatable
+     *
+     * @param \Slim\Http\Request  $request
+     * @param \Slim\Http\Response $response
+     *
+     * @return \Slim\Http\Response
+     */
+    public function datatable(Request $request, Response $response): Response
+    {
+        $this->authorize('{TABLE_NAME}.view');
+
+        $router = $this->router;
+
+        $datatable = new Datatable('{TABLE_NAME}', $this->get('pdo'), $request->getParams());
+        $datatable->addRowId()
+            ->addColumn('id')
+            ->addColumn('code')
+            ->addColumn('name')
+            ->addColumn('description')
+            ->addColumn('id', 'action', function ($data, $row) use ($router) {
+                $viewUrl = $router->pathFor('{TABLE_NAME}.view', ['{TABLE_NAME}' => $data]);
+
+                return "
+                    <div class=\"pull-right\">
+                        <div class=\"btn-toolbar\" role=\"toolbar\">
+                            <div class=\"btn-group btn-group-sm\">
+                                <a type=\"button\" class=\"btn btn-default\" href=\"{$viewUrl}\">
+                                    Mostrar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                ";
+            });
+
+        return $response->withJson($datatable->toArray());
+    }
+}

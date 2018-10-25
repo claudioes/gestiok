@@ -1,0 +1,41 @@
+{% extends 'layouts/app.twig' %}
+
+{% block js %}
+    <script>
+        $(function() {
+            App.initForm();
+        });
+    </script>
+{% endblock %}
+
+{% block title %}
+    {{ __('Creating {TABLE_NAME}') }}
+{% endblock %}
+
+{% block toolbar_left %}
+    <a href="{{ path_for('{TABLE_NAME}.index') }}" class="btn btn-default">
+        <i class="fa fa-arrow-left"></i>
+        {{ __('Back') }}
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form id="form" class="form-horizontal" action="{{ path_for('{TABLE_NAME}.store') }}" method="post" autocomplete="off">
+                {{ csrf_field() }}
+
+                {% include '{TABLE_NAME}/partials/form.twig' %}
+
+                <div class="row">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-check"></i>
+                            {{ __('Save') }}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

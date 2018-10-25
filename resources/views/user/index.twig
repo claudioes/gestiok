@@ -1,0 +1,55 @@
+{% extends 'layouts/app.twig' %}
+
+{% block js %}
+    <script>
+        $(function () {
+            $('#btn-clear').click(function (e) {
+                var form = document.getElementById('filter-form');
+
+                $('input', form).val('');
+                $('checkbox', form).removeAttr('checked');
+                $('select', form).each(function () {
+                    this.selectedIndex = 0;
+                });
+
+                form.submit();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block title %}
+    {{ __('Users') }}
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% include 'user/partials/filter.twig' %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-9">
+            {% for row in users|batch(2) %}
+                <div class="row">
+                    {% for user in row %}
+                        <div class="col-sm-6">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    {% include 'user/partials/item.twig' %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+            <div class="pull-right">
+                {% include 'layouts/helpers/links.twig' with {paginator: users} %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

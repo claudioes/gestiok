@@ -1,0 +1,70 @@
+{% extends 'layouts/app.twig' %}
+
+{% set can_delete = auth.user.can('delete', product) %}
+{% set can_edit = auth.user.can('edit', product) %}
+
+{% block title %}
+    {{ __('Viewing product') }}
+{% endblock %}
+
+{% block toolbar_left %}
+    <a href="{{ path_for('product.index') }}" class="btn btn-default">
+        <i class="fa fa-arrow-left"></i>
+        {{ __('Back') }}
+    </a>
+{% endblock %}
+
+{% block toolbar_right %}
+    {% if can_delete %}
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delete-modal">
+            <i class="fa fa-trash"></i>
+            {{ __('Delete') }}
+        </button>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row row-data">
+                        <div class="col-sm-4 col-label">
+                            {{ __('Code') }}
+                        </div>
+                        <div class="col-sm-8">
+                            {{ product.code }}
+                        </div>
+                    </div><!-- row-data -->
+
+                    <div class="row row-data">
+                        <div class="col-sm-4 col-label">
+                            {{ __('Description') }}
+                        </div>
+                        <div class="col-sm-8">
+                            {{ product.description }}
+                        </div>
+                    </div><!-- row-data -->
+                </div><!-- col -->
+                <div class="col-sm-6">
+                    {% include 'layouts/helpers/audit.twig' with {model: product} only %}
+                </div><!-- col -->
+            </div><!-- row -->
+
+            {% if can_edit %}
+                <div class="row">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <a href="{{ path_for('product.edit', {product: product.id}) }}" class="btn btn-primary">
+                            <i class="fa fa-pencil"></i>
+                            {{ __('Edit') }}
+                        </a>
+                    </div><!-- row -->
+                </div><!-- row -->
+            {% endif %}
+        </div><!-- panel-body -->
+    </div><!-- panel -->
+
+    {% if can_delete %}
+        {% include 'product/partials/modal_delete.twig' %}
+    {% endif %}
+{% endblock %}
