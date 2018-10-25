@@ -2,7 +2,9 @@
 /node_modules/
 /resources/cache/
 /public/js/*.js
+!/public/js/*.min.js
 /public/css/*.css
+!/public/css/*.min.css
 .vscode
 .idea
 .DS_Store
