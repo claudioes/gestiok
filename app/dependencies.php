@@ -13,7 +13,7 @@ $container['view'] = function ($c) {
 
     $view->addExtension(new Slim\Views\TwigExtension(
         $c->get('router'),
-        $c->get('request')->getUri()
+        $settings['app_url'] // $c->get('request')->getUri() // Not working on Heroku
     ));
     $view->addExtension(new App\TwigExtensions\CsrfExtension(
         $c->get('csrf')
