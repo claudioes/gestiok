@@ -1,19 +1,15 @@
 <!-- Vendor -->
-<script src="{{ base_url() }}/js/vendor.min.js"></script>
+<script src="js/vendor.min.js"></script>
 
 <!-- Application -->
 <script>
     var App = App || {};
 
     App = {
-        basePath: '{{ base_url() }}',
         dateFormat: 'dd/mm/yyyy',
-        getUrl: function (url, data) {
-            return this.basePath + '/' + url + (typeof data === "undefined" ? '' : '?' + $.param(data));
-        },
         csrf: {
-            csrf_name: '{{ csrf_name }}',
-            csrf_value: '{{ csrf_value }}',
+            csrf_name: '{{ csrf_name() }}',
+            csrf_value: '{{ csrf_value() }}',
         },
     };
 

@@ -11,24 +11,25 @@ $container['view'] = function ($c) {
 
     // Extensions
 
-    $request = $c->get('request');
-
     $view->addExtension(new Slim\Views\TwigExtension(
         $c->get('router'),
-        $request->getUri()
+        $c->get('request')->getUri()
     ));
     $view->addExtension(new App\TwigExtensions\CsrfExtension(
         $c->get('csrf')
     ));
+    $view->addExtension(new App\TwigExtensions\TranslationExtension(
+        $c->get('translator')
+    ));
     $view->addExtension(new App\TwigExtensions\DebugExtension);
-    $view->addExtension(new App\TwigExtensions\TranslationExtension($c->get('translator')));
 
-    // Globals
+    // Environment
 
-    $env = $view->getEnvironment();
-    
+    $env = $view->getEnvironment();    
     $env->getExtension('Twig_Extension_Core')->setDateFormat(DATE_FORMAT, '%d days');
 
+    // Globals
+    
     $env->addGlobal('app_name', $settings['app_name']);
     $env->addGlobal('flash', $c->get('flash'));
 

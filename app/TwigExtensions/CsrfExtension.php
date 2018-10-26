@@ -21,6 +21,8 @@ class CsrfExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction('csrf_field', [$this, 'csrfField'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction('csrf_name', [$this, 'csrfValue']),
+            new \Twig_SimpleFunction('csrf_value', [$this, 'csrfName']),
         ];
     }
 
@@ -30,5 +32,15 @@ class CsrfExtension extends \Twig_Extension
             <input type="hidden" name="'. $this->guard->getTokenNameKey() .'" value="'. $this->guard->getTokenName() .'">
             <input type="hidden" name="'. $this->guard->getTokenValueKey() .'" value="'. $this->guard->getTokenValue() .'">
         ';
+    }
+
+    public function csrfName(): string
+    {
+        return $this->guard->getTokenName();
+    }
+
+    public function csrfValue(): string
+    {
+        return $this->guard->getTokenValue();
     }
 }

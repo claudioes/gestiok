@@ -1,0 +1,1 @@
+[2018-10-26 01:39:49] app.ERROR: Unknown "csrf_name" function. {"exception":"Code 0 on file /home/vagrant/www/gestiok/resources/views/layouts/partials/js.twig, line 11","uri":"http://gestiok.test/login","method":"GET"} []
